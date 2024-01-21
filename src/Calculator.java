@@ -117,11 +117,11 @@ public class Calculator implements ActionListener{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    //
+
     //
     //MAIN
     //
-    //
+
 
     public static void main(String[] args) {
         Calculator calc = new Calculator();
