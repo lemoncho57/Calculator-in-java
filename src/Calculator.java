@@ -20,6 +20,7 @@ public class Calculator implements ActionListener{
     JPanel panel;
     Font font = new Font("Arial Rounded MT", Font.BOLD, 26);
     Color darkGreen = new Color(0, 100, 0);
+    ImageIcon icon = new ImageIcon("Assets/Images/icons8-calculator-96.png");
 
     double num1;
     double num2;
@@ -104,6 +105,7 @@ public class Calculator implements ActionListener{
         panel.add(equB);
         panel.add(divB);
 
+        frame.setIconImage(icon.getImage());
         frame.add(textField);
         frame.add(delB);
         frame.add(clrB);
