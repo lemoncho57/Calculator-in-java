@@ -1,6 +1,12 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Objects;
+
 
 public class Calculator implements ActionListener{
 
@@ -18,20 +24,36 @@ public class Calculator implements ActionListener{
     JButton clrB;
     JButton plusMinusB;
     JPanel panel;
+    JButton infoB;
+    JButton darkLightModeB;
+    JButton settingB;
     Font font = new Font("Arial Rounded MT", Font.BOLD, 26);
     Color darkGreen = new Color(0, 100, 0);
     ImageIcon icon = new ImageIcon("Assets/Images/icons8-calculator-96.png");
+    ImageIcon darkLightIcon = new ImageIcon("Assets/Images/darkLight.png");
+    Image imageDarkLighIconEdited = darkLightIcon.getImage();
+    Image newImageDarkLightIconEdited = imageDarkLighIconEdited.getScaledInstance(65,65, Image.SCALE_SMOOTH);
+
+    ImageIcon infoIcon = new ImageIcon("Assets/Images/infoImageIcon.png");
+    Image imageInfoIconEdited = infoIcon.getImage();
+    Image newImageInfoIconEdited = imageInfoIconEdited.getScaledInstance(65,65, Image.SCALE_SMOOTH);
+
+    FileWriter writer;
+    File historyFile;
 
     double num1;
     double num2;
     double result;
     char numOperator;
 
-    Calculator()
-    {
-        frame = new JFrame("Calculator");
-        frame.setSize(450, 550);
+    boolean isDark = true;
 
+    Calculator(){
+        frame = new JFrame("Calculator");
+        frame.setSize(450, 620);
+
+        infoIcon = new ImageIcon(newImageInfoIconEdited);
+        darkLightIcon = new ImageIcon(newImageDarkLightIconEdited);
 
         textField = new JTextField();
         textField.setBounds(50,25,330,45);
@@ -39,6 +61,25 @@ public class Calculator implements ActionListener{
         textField.setEditable(false);
         textField.setBackground(Color.darkGray);
         textField.setForeground(Color.white);
+
+        // History
+        try {
+
+            historyFile = new File("history.txt");
+            if (historyFile.createNewFile())
+            {
+                System.out.println("File Created");
+            } else
+                System.out.println("File exists");
+
+            writer = new FileWriter("history.txt");
+
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
 
         addB = new JButton("+");
         subB = new JButton("-");
@@ -49,6 +90,10 @@ public class Calculator implements ActionListener{
         delB = new JButton("DEL");
         clrB = new JButton("C");
         plusMinusB = new JButton("±");
+
+        infoB = new JButton(infoIcon);
+        darkLightModeB = new JButton(darkLightIcon);
+        settingB = new JButton("⚙\uFE0F");
 
         functionsB[0] = addB;
         functionsB[1] = subB;
@@ -83,6 +128,15 @@ public class Calculator implements ActionListener{
         clrB.setBounds(163,100, 105,50);
         plusMinusB.setBounds(275,100,105,50);
 
+        infoB.setBounds(310,492,65,65);
+        infoB.addActionListener(this);
+
+        darkLightModeB.setBounds(230, 492, 65, 65);
+        darkLightModeB.addActionListener(this);
+
+        settingB.setBounds(130, 492, 65, 65);
+        settingB.addActionListener(this);
+
         panel = new JPanel();
         panel.setBounds(50,170,330,315);
         panel.setLayout(new GridLayout(4,4,10,10));
@@ -110,6 +164,9 @@ public class Calculator implements ActionListener{
         frame.add(delB);
         frame.add(clrB);
         frame.add(plusMinusB);
+        frame.add(infoB);
+        frame.add(darkLightModeB);
+        frame.add(settingB);
         frame.add(panel);
         frame.getContentPane().setBackground(Color.gray);
         frame.setLayout(null);
@@ -125,6 +182,8 @@ public class Calculator implements ActionListener{
 
     public static void main(String[] args) {
         Calculator calc = new Calculator();
+
+
     }
 
     @Override
@@ -211,6 +270,13 @@ public class Calculator implements ActionListener{
                         textField.setText("Incorrect");
                         break;
                 }
+                if (e.getSource() == addB || e.getSource() == subB || e.getSource() == mulB || e.getSource() == divB|| e.getSource() == plusMinusB)
+                {
+                    num1 = result;
+                }
+
+                writer.write("\n" + num1 + numOperator + num2 + " = " + result);
+                writer.flush();
             }
             catch (Exception error)
             {
@@ -227,12 +293,20 @@ public class Calculator implements ActionListener{
         }
         if (e.getSource() == delB)
         {
+            if (Objects.equals(textField.getText(), "Enter a number first!") || Objects.equals(textField.getText(), "Incorrect") || Objects.equals(textField.getText(), "Make a calculation first!"))
+            {
+                textField.setText("");
+                num1 = 0;
+                num2 = 0;
+                result = 0;
+            }
             String s = textField.getText();
             textField.setText("");
             for (int i = 0; i < s.length()-1; i++)
             {
                 textField.setText(textField.getText() + s.charAt(i));
             }
+
         }
         if (e.getSource() == plusMinusB)
         {
@@ -247,6 +321,38 @@ public class Calculator implements ActionListener{
             {
                 textField.setText("Enter a number first!");
             }
+        }
+
+        if (e.getSource() == infoB)
+        {
+            JOptionPane.showMessageDialog(null, "This is calculator made in java :)");
+        }
+        if (e.getSource() == darkLightModeB)
+        {
+            if (isDark)
+            {
+                frame.getContentPane().setBackground(Color.white);
+                panel.setBackground(Color.white);
+
+                textField.setBackground(Color.white);
+                textField.setForeground(Color.black);
+
+                isDark = false;
+            }
+            else
+            {
+                frame.getContentPane().setBackground(Color.gray);
+                panel.setBackground(Color.gray);
+
+                textField.setBackground(Color.darkGray);
+                textField.setForeground(Color.white);
+
+                isDark = true;
+            }
+        }
+        if (e.getSource() == settingB)
+        {
+            new SettingsPage();
         }
     }
 }
