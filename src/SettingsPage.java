@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -14,8 +15,12 @@ public class SettingsPage implements ActionListener {
     JLabel label;
     JButton showHistoryB;
     JTextArea historyField;
+    JScrollPane scrollHistoryField;
     FileReader reader;
     Scanner scanner;
+    JMenuBar menuBar;
+    JMenu fileMenu;
+    JMenuItem closeItem;
 
     Font font = new Font("Meiryo UI", Font.BOLD, 20);
 
@@ -33,6 +38,13 @@ public class SettingsPage implements ActionListener {
             e.printStackTrace();
         }
 
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        closeItem = new JMenuItem("Close");
+        closeItem.addActionListener(this);
+        closeItem.setMnemonic(KeyEvent.VK_C);
+
 
         label = new JLabel("History");
         label.setBounds(170, 150,50,50);
@@ -44,13 +56,20 @@ public class SettingsPage implements ActionListener {
         historyField = new JTextArea();
         historyField.setBounds(170,200,400,200);
         historyField.setEditable(false);
+        historyField.setLineWrap(true);
+        historyField.setVisible(true);
         historyField.setFont(font);
 
+        menuBar.add(fileMenu);
+        fileMenu.add(closeItem);
+
+        scrollHistoryField = new JScrollPane(historyField, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         frame.add(label);
         frame.add(showHistoryB);
         frame.add(historyField);
         frame.setLayout(null);
+        frame.setJMenuBar(menuBar);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -63,14 +82,18 @@ public class SettingsPage implements ActionListener {
             // TEST
             //chooser = new JFileChooser();
             //chooser.showSaveDialog(null);
-
+            historyField.setText("");
             while (scanner.hasNext())
             {
                 String line = scanner.nextLine();
+
                 historyField.setText(historyField.getText() + "\n" + line + "\n");
             }
         }
-
+        if (e.getSource() == closeItem)
+        {
+            frame.dispose();
+        }
     }
 
 

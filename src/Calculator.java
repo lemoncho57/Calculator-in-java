@@ -27,7 +27,13 @@ public class Calculator implements ActionListener{
     JButton infoB;
     JButton darkLightModeB;
     JButton settingB;
+    JMenuBar menuBar;
+    JMenu fileMenu;
+    JMenu helpMenu;
+    JMenuItem exitItem; // fileMenu
+    JMenuItem infoItem; // helpMenu
     Font font = new Font("Arial Rounded MT", Font.BOLD, 26);
+    Font fontSettingsB = new Font("Arial Rounded MT", Font.PLAIN, 16);
     Color darkGreen = new Color(0, 100, 0);
     ImageIcon icon = new ImageIcon("Assets/Images/icons8-calculator-96.png");
     ImageIcon darkLightIcon = new ImageIcon("Assets/Images/darkLight.png");
@@ -62,18 +68,26 @@ public class Calculator implements ActionListener{
         textField.setBackground(Color.darkGray);
         textField.setForeground(Color.white);
 
+        menuBar = new JMenuBar();
+
+        fileMenu = new JMenu("File");
+        helpMenu = new JMenu("Help");
+
+        exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(this);
+        infoItem = new JMenuItem("Info", infoIcon);
+        infoItem.addActionListener(this);
+
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
+
+        fileMenu.add(exitItem);
+        helpMenu.add(infoItem);
+
         // History
         try {
-
             historyFile = new File("history.txt");
-            if (historyFile.createNewFile())
-            {
-                System.out.println("File Created");
-            } else
-                System.out.println("File exists");
-
             writer = new FileWriter("history.txt");
-
         }
         catch (IOException e)
         {
@@ -91,7 +105,7 @@ public class Calculator implements ActionListener{
         clrB = new JButton("C");
         plusMinusB = new JButton("±");
 
-        infoB = new JButton(infoIcon);
+        //infoB = new JButton(infoIcon);
         darkLightModeB = new JButton(darkLightIcon);
         settingB = new JButton("⚙\uFE0F");
 
@@ -128,13 +142,12 @@ public class Calculator implements ActionListener{
         clrB.setBounds(163,100, 105,50);
         plusMinusB.setBounds(275,100,105,50);
 
-        infoB.setBounds(310,492,65,65);
-        infoB.addActionListener(this);
 
-        darkLightModeB.setBounds(230, 492, 65, 65);
+        darkLightModeB.setBounds(310, 492, 65, 65);
         darkLightModeB.addActionListener(this);
 
-        settingB.setBounds(130, 492, 65, 65);
+        settingB.setBounds(230, 492, 65, 65);
+        settingB.setFont(fontSettingsB);
         settingB.addActionListener(this);
 
         panel = new JPanel();
@@ -164,10 +177,10 @@ public class Calculator implements ActionListener{
         frame.add(delB);
         frame.add(clrB);
         frame.add(plusMinusB);
-        frame.add(infoB);
         frame.add(darkLightModeB);
         frame.add(settingB);
         frame.add(panel);
+        frame.setJMenuBar(menuBar);
         frame.getContentPane().setBackground(Color.gray);
         frame.setLayout(null);
         frame.setVisible(true);
@@ -323,10 +336,6 @@ public class Calculator implements ActionListener{
             }
         }
 
-        if (e.getSource() == infoB)
-        {
-            JOptionPane.showMessageDialog(null, "This is calculator made in java :)");
-        }
         if (e.getSource() == darkLightModeB)
         {
             if (isDark)
@@ -353,6 +362,15 @@ public class Calculator implements ActionListener{
         if (e.getSource() == settingB)
         {
             new SettingsPage();
+        }
+
+        if (e.getSource() == exitItem)
+        {
+            System.exit(0);
+        }
+        if (e.getSource() == infoItem)
+        {
+            JOptionPane.showMessageDialog(null, "This is calculator that is made in java :)");
         }
     }
 }
