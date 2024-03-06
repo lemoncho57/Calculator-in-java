@@ -47,14 +47,14 @@ public class SettingsPage implements ActionListener {
 
 
         label = new JLabel("History");
-        label.setBounds(170, 150,50,50);
+        label.setBounds(170, 100,50,50);
 
         showHistoryB = new JButton("Show history");
-        showHistoryB.setBounds(175,415,100,37);
+        showHistoryB.setBounds(175,520,130,37);
         showHistoryB.addActionListener(this);
 
         historyField = new JTextArea();
-        historyField.setBounds(170,200,400,200);
+        historyField.setBounds(170,150,400,350);
         historyField.setEditable(false);
         historyField.setLineWrap(true);
         historyField.setVisible(true);
@@ -95,6 +95,5 @@ public class SettingsPage implements ActionListener {
             frame.dispose();
         }
     }
-
 
 }

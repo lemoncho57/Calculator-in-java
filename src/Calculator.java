@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
@@ -31,14 +30,15 @@ public class Calculator implements ActionListener{
     JMenu fileMenu;
     JMenu helpMenu;
     JMenuItem exitItem; // fileMenu
+    JMenuItem settingsItem; //fileMenu
     JMenuItem infoItem; // helpMenu
     Font font = new Font("Arial Rounded MT", Font.BOLD, 26);
     Font fontSettingsB = new Font("Arial Rounded MT", Font.PLAIN, 16);
     Color darkGreen = new Color(0, 100, 0);
     ImageIcon icon = new ImageIcon("Assets/Images/icons8-calculator-96.png");
     ImageIcon darkLightIcon = new ImageIcon("Assets/Images/darkLight.png");
-    Image imageDarkLighIconEdited = darkLightIcon.getImage();
-    Image newImageDarkLightIconEdited = imageDarkLighIconEdited.getScaledInstance(65,65, Image.SCALE_SMOOTH);
+    Image imageDarkLightIconEdited = darkLightIcon.getImage();
+    Image newImageDarkLightIconEdited = imageDarkLightIconEdited.getScaledInstance(65,65, Image.SCALE_SMOOTH);
 
     ImageIcon infoIcon = new ImageIcon("Assets/Images/infoImageIcon.png");
     Image imageInfoIconEdited = infoIcon.getImage();
@@ -57,6 +57,10 @@ public class Calculator implements ActionListener{
     Calculator(){
         frame = new JFrame("Calculator");
         frame.setSize(450, 620);
+        frame.setResizable(false);
+
+        //frame.setMaximumSize(new Dimension(450, 650));
+        //frame.setMinimumSize(new Dimension(450, 650));
 
         infoIcon = new ImageIcon(newImageInfoIconEdited);
         darkLightIcon = new ImageIcon(newImageDarkLightIconEdited);
@@ -73,6 +77,8 @@ public class Calculator implements ActionListener{
         fileMenu = new JMenu("File");
         helpMenu = new JMenu("Help");
 
+        settingsItem = new JMenuItem("Open Settings");
+        settingsItem.addActionListener(this);
         exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(this);
         infoItem = new JMenuItem("Info", infoIcon);
@@ -81,6 +87,7 @@ public class Calculator implements ActionListener{
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
 
+        fileMenu.add(settingsItem);
         fileMenu.add(exitItem);
         helpMenu.add(infoItem);
 
@@ -198,6 +205,10 @@ public class Calculator implements ActionListener{
 
 
     }
+
+    //
+    //
+    //
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -361,7 +372,7 @@ public class Calculator implements ActionListener{
         }
         if (e.getSource() == settingB)
         {
-            new SettingsPage();
+            openSettings();
         }
 
         if (e.getSource() == exitItem)
@@ -372,5 +383,13 @@ public class Calculator implements ActionListener{
         {
             JOptionPane.showMessageDialog(null, "This is calculator that is made in java :)");
         }
+        if (e.getSource() == settingsItem)
+        {
+            openSettings();
+        }
+    }
+
+    private void openSettings() {
+        new SettingsPage();
     }
 }
