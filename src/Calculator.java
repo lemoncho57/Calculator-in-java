@@ -179,6 +179,7 @@ public class Calculator implements ActionListener{
         panel.add(equB);
         panel.add(divB);
 
+
         frame.setIconImage(icon.getImage());
         frame.add(textField);
         frame.add(delB);
@@ -202,7 +203,6 @@ public class Calculator implements ActionListener{
 
     public static void main(String[] args) {
         Calculator calc = new Calculator();
-
 
     }
 
@@ -381,7 +381,7 @@ public class Calculator implements ActionListener{
         }
         if (e.getSource() == infoItem)
         {
-            JOptionPane.showMessageDialog(null, "This is calculator that is made in java :)");
+            JOptionPane.showMessageDialog(null, "This is calculator that is made in java by Lemoncho :)");
         }
         if (e.getSource() == settingsItem)
         {

@@ -14,7 +14,9 @@ public class SettingsPage implements ActionListener {
     JFrame frame;
     JLabel label;
     JButton showHistoryB;
-    JTextArea historyField;
+    JButton deleteHistoryB;
+    DefaultListModel<String> listModel;
+    JList<String> historyField;
     JScrollPane scrollHistoryField;
     FileReader reader;
     Scanner scanner;
@@ -53,12 +55,18 @@ public class SettingsPage implements ActionListener {
         showHistoryB.setBounds(175,520,130,37);
         showHistoryB.addActionListener(this);
 
-        historyField = new JTextArea();
+        deleteHistoryB = new JButton("Delete history");
+        deleteHistoryB.setBounds(320,520,130,37);
+        deleteHistoryB.addActionListener(this);
+
+        listModel = new DefaultListModel<String>();
+        listModel.clear();
+
+        historyField = new JList<String>();
         historyField.setBounds(170,150,400,350);
-        historyField.setEditable(false);
-        historyField.setLineWrap(true);
         historyField.setVisible(true);
         historyField.setFont(font);
+        historyField.setModel(listModel);
 
         menuBar.add(fileMenu);
         fileMenu.add(closeItem);
@@ -67,6 +75,7 @@ public class SettingsPage implements ActionListener {
 
         frame.add(label);
         frame.add(showHistoryB);
+        frame.add(deleteHistoryB);
         frame.add(historyField);
         frame.setLayout(null);
         frame.setJMenuBar(menuBar);
@@ -82,14 +91,18 @@ public class SettingsPage implements ActionListener {
             // TEST
             //chooser = new JFileChooser();
             //chooser.showSaveDialog(null);
-            historyField.setText("");
+
             while (scanner.hasNext())
             {
                 String line = scanner.nextLine();
 
-                historyField.setText(historyField.getText() + "\n" + line + "\n");
+                listModel.addElement(line);
             }
         }
+        if (e.getSource() == deleteHistoryB){
+            listModel.clear();
+        }
+
         if (e.getSource() == closeItem)
         {
             frame.dispose();
